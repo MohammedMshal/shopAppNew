@@ -19,6 +19,7 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordStates> {
       emit(ChangeShowCloseState());
        iconClosed = Icons.close;
     }
+    //1
 
   }
 
