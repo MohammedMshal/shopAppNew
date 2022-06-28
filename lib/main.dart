@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_app/module/auth_screens/register/register.dart';
 import 'package:shop_app/shared/style/theme.dart';
 
 import 'layout/cubit/layout_cubit.dart';
-import 'layout/layout_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: lightTheme,
-        home: const LayoutScreen(),
+        home:  RegisterScreen(),
       ),
     );
   }

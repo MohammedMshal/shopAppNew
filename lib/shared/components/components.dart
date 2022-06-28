@@ -29,6 +29,8 @@ Widget defaultTextFormField({
   required FormFieldValidator<String> validator,
   required String label,
   required IconData prefixIcon,
+   GestureTapCallback? onTapSuffix,
+  IconData? suffixIco ,
   bool isRadius = true,
   bool isPassword = false,
   double radius = 24.0,
@@ -55,7 +57,10 @@ Widget defaultTextFormField({
         labelText: label,
         border: const OutlineInputBorder(),
         prefixIcon: Icon(prefixIcon),
-        suffixIcon: isPassword ? null : const Icon(Icons.visibility),
+        suffixIcon: IconButton(
+          onPressed:  onTapSuffix,
+          icon: Icon(suffixIco),
+        )
       ),
     ),
   );
@@ -73,5 +78,58 @@ Widget defaultTextButton({
       isUpperText ? label.toUpperCase() : label,
       style: labelStyle,
     ),
+  );
+}
+
+Widget defaultAuthSign({
+  bool isRadius = true,
+  double height = 64.0,
+  double width = 92.0,
+  double radius = 20.0,
+  double? size,
+  Color color = Colors.blue,
+  required IconData icon,
+  required GestureTapCallback? onTap,
+}) {
+  return InkWell(
+    onTap: onTap,
+    child: Container(
+      height: height,
+      width: width,
+      decoration: BoxDecoration(
+        color: myWight,
+        borderRadius: BorderRadius.all(
+          isRadius ? Radius.circular(radius) : Radius.zero,
+        ),
+      ),
+      child: Center(
+        child: Icon(
+          icon,
+          color: color,
+          size: size,
+        ),
+      ),
+    ),
+  );
+}
+
+void navigatorTo({
+  required BuildContext context,
+  required Widget widget,
+}) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => widget),
+  );
+}
+
+void navigatorRemoved({
+  required BuildContext context,
+  required Widget widget,
+}) {
+  Navigator.pushAndRemoveUntil(
+    context,
+    MaterialPageRoute(builder: (context) => widget),
+    (route) => false,
   );
 }
