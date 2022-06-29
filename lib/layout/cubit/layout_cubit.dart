@@ -4,13 +4,14 @@ import 'package:shop_app/layout/cubit/layout_state.dart';
 import 'package:shop_app/module/bag_screen/bag.dart';
 import 'package:shop_app/module/favorite_screen/favorite.dart';
 import 'package:shop_app/module/home_screen/home.dart';
-import 'package:shop_app/module/profile_screen/profile.dart';
+import 'package:shop_app/module/profile_screen/settings.dart';
 import 'package:shop_app/module/shop_screen/shop.dart';
 
 
 
 class LayoutCubit extends Cubit<LayoutStates> {
   LayoutCubit() : super(LayoutInitial());
+
   static LayoutCubit get(context) => BlocProvider.of(context);
   int currentIndex = 0;
   List<Widget> changePage = [
@@ -18,18 +19,26 @@ class LayoutCubit extends Cubit<LayoutStates> {
     const ShopScreen(),
     const BagScreen(),
     const FavoriteScreen(),
-    const ProfileScreen(),
+    const SettingsScreen(),
   ];
-  List<String> changeTitle= [
+  List<String> changeTitle = [
     'Home',
     'Shop',
     'Bag',
     'Favorite',
     'Profile',
   ];
-  void changeBottomNav(int index){
 
+  void changeBottomNav(int index) {
     currentIndex = index;
     emit(ChangeBottomNavState());
+  }
+
+
+  bool switchDarkMode = true;
+
+  void changeDarkMode() {
+    switchDarkMode = !switchDarkMode;
+    emit(ChangeThemeModeState());
   }
 }
