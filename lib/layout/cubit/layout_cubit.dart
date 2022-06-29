@@ -6,6 +6,7 @@ import 'package:shop_app/module/favorite_screen/favorite.dart';
 import 'package:shop_app/module/home_screen/home.dart';
 import 'package:shop_app/module/profile_screen/settings.dart';
 import 'package:shop_app/module/shop_screen/shop.dart';
+import 'package:shop_app/shared/network/locale/cache_helper.dart';
 
 
 
@@ -37,8 +38,18 @@ class LayoutCubit extends Cubit<LayoutStates> {
 
   bool switchDarkMode = true;
 
-  void changeDarkMode() {
-    switchDarkMode = !switchDarkMode;
-    emit(ChangeThemeModeState());
+  void changeDarkMode({
+  bool? formShared
+}) {
+    if(formShared != null) {
+      switchDarkMode =  formShared;
+      emit(ChangeThemeModeState());
+    } else {
+      switchDarkMode = !switchDarkMode;
+
+    CacheHelper.putData(key: 'isDark', value: switchDarkMode).then((value){
+      emit(ChangeThemeModeState());
+    });
+    }
   }
 }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:shop_app/layout/cubit/layout_cubit.dart';
 import 'package:shop_app/shared/components/components.dart';
 
-import '../../shared/style/theme.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -30,7 +29,7 @@ Widget _buildDarkMode({
       Text('DarkMode', style: Theme.of(context).textTheme.bodyMedium),
       const Spacer(),
       defaultSwitch(
-        value: LayoutCubit.get(context).switchDarkMode,
+        value: LayoutCubit.get(context).switchDarkMode ? false : true,
         onChanged: (value) {
           LayoutCubit.get(context).changeDarkMode();
         },
