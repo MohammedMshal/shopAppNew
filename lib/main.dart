@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/layout/cubit/layout_state.dart';
-import 'package:shop_app/layout/layout_screen.dart';
+import 'package:shop_app/module/auth_screens/register/register.dart';
+import 'package:shop_app/shared/constans.dart';
 import 'package:shop_app/shared/network/locale/cache_helper.dart';
 import 'package:shop_app/shared/network/remote/dio_helper.dart';
 import 'package:shop_app/shared/style/theme.dart';
@@ -13,6 +14,7 @@ void main() async {
   DioHelper.init();
   await CacheHelper.init();
   bool isDark =  CacheHelper.getData(key: 'isDark') ?? true ;
+  token = CacheHelper.getData(key:'token') ?? '';
   runApp( MyApp(isDark: isDark,));
 }
 
@@ -38,7 +40,7 @@ class MyApp extends StatelessWidget {
             theme: lightTheme,
             darkTheme: darkTheme,
             themeMode: cubit.switchDarkMode ? ThemeMode.light : ThemeMode.dark,
-            home: const LayoutScreen(),
+            home:  RegisterScreen(),
           );
         },
       ),

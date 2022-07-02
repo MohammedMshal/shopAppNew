@@ -36,7 +36,8 @@ ThemeData darkTheme = ThemeData(
           fontSize: 18.0, fontWeight: FontWeight.bold, color: Colors.white),
       bodySmall: TextStyle(
           fontSize: 14.0, fontWeight: FontWeight.bold, color: Colors.white),
-    ));
+    ),
+);
 
 ThemeData lightTheme = ThemeData(
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(

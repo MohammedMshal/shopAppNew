@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shop_app/shared/style/theme.dart';
 
 Widget defaultButton({
@@ -127,6 +128,44 @@ Widget defaultSwitch({
   );
 }
 
+
+Future<bool?> showToast(
+    {
+      required String text,
+      required ToastStatus status,
+    }
+    ) => Fluttertoast.showToast(
+  msg: text,
+  toastLength: Toast.LENGTH_LONG,
+  gravity: ToastGravity.BOTTOM,
+  timeInSecForIosWeb: 5,
+  backgroundColor: chooseToastColor(status),
+  fontSize: 14,
+);
+
+enum ToastStatus {
+  success,
+  error,
+  warning,
+}
+
+Color chooseToastColor(ToastStatus status) {
+  Color color;
+  switch (status) {
+    case ToastStatus.success:
+      color = Colors.green;
+      break;
+    case ToastStatus.error:
+      color = Colors.red;
+      break;
+    case ToastStatus.warning:
+      color = Colors.amber;
+      break;
+  }
+  return color;
+}
+
+
 void navigatorTo({
   required BuildContext context,
   required Widget widget,
@@ -147,3 +186,5 @@ void navigatorRemoved({
     (route) => false,
   );
 }
+
+
