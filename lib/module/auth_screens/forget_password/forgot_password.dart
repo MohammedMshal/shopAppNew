@@ -23,18 +23,20 @@ class ForgotPasswordScreen extends StatelessWidget {
       appBar: AppBar(),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _buildTextForgotPassword(context: context),
-            const SizedBox(height: 80.0),
-            _buildBodyText(context: context),
-            const SizedBox(height: 15),
-            _buildTextBox(context: context ),
-            const SizedBox(height: 80),
-            _buildButtonSend(),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _buildTextForgotPassword(context: context),
+              const SizedBox(height: 80.0),
+              _buildBodyText(context: context),
+              const SizedBox(height: 15),
+              _buildTextBox(context: context ),
+              const SizedBox(height: 80),
+              _buildButtonSend(),
+            ],
+          ),
         ),
       ),
     );

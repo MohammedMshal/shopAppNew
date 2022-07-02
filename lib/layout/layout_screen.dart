@@ -16,7 +16,9 @@ class LayoutScreen extends StatelessWidget {
         LayoutCubit cubit = LayoutCubit.get(context);
         return Scaffold(
           appBar: AppBar(
-            title: Text(cubit.changeTitle[cubit.currentIndex]),
+            title: Text(cubit.changeTitle[cubit.currentIndex],style: Theme.of(context).textTheme.titleMedium,),
+            centerTitle: true,
+            leading:  IconButton(icon: const Icon(Icons.arrow_back_ios_new_outlined),onPressed: (){}),
           ),
           body: cubit.changePage[cubit.currentIndex],
           bottomNavigationBar: BottomNavigationBar(

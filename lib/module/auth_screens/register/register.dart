@@ -1,3 +1,4 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -6,6 +7,8 @@ import 'package:shop_app/module/auth_screens/login/login.dart';
 import 'package:shop_app/module/auth_screens/register/cubit/regester_state.dart';
 import 'package:shop_app/module/auth_screens/register/cubit/register_cubit.dart';
 import 'package:shop_app/shared/components/components.dart';
+import 'package:shop_app/shared/constans.dart';
+import 'package:shop_app/shared/network/locale/cache_helper.dart';
 
 class RegisterScreen extends StatelessWidget {
   RegisterScreen({Key? key}) : super(key: key);
@@ -13,16 +16,27 @@ class RegisterScreen extends StatelessWidget {
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final phoneController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-
     return BlocProvider(
       create: (context) => RegisterCubit(),
       child: BlocConsumer<RegisterCubit, RegisterState>(
         listener: (context, state) {
-          // TODO: implement listener
+          if (state is RegisterSuccessState) {
+            if (state.registerModel!.status!) {
+              CacheHelper.putData(
+                key: 'token',
+                value: state.registerModel!.data!.token,
+              ).then((value) {
+                token = state.registerModel!.data!.token!;
+                navigatorRemoved(
+                    context: context, widget: const LayoutScreen());
+              });
+            }
+          }
         },
         builder: (context, state) {
           return Scaffold(
@@ -30,7 +44,8 @@ class RegisterScreen extends StatelessWidget {
             body: Padding(
               padding: const EdgeInsets.all(10.0),
               child: SingleChildScrollView(
-                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag,
                 child: Form(
                   key: formKey,
                   child: Column(
@@ -43,10 +58,11 @@ class RegisterScreen extends StatelessWidget {
                       _buildTextBoxEmail(),
                       const SizedBox(height: 10.0),
                       _buildTextBoxPassword(context: context),
+                      const SizedBox(height: 10.0),
+                      _buildTextBoxPhone(),
                       const SizedBox(height: 15.0),
                       _buildForgotYourPassword(context),
-                      const SizedBox(height: 20.0),
-                      _buildRegisterButton(context: context),
+                      _buildRegisterButton(registerState: state),
                       const SizedBox(height: 20.0),
                       _buildTextRegisterWith(context),
                       const SizedBox(height: 15.0),
@@ -83,7 +99,6 @@ class RegisterScreen extends StatelessWidget {
     );
   }
 
-
   Widget _buildTextBoxEmail() {
     return defaultTextFormField(
       controller: emailController,
@@ -98,12 +113,23 @@ class RegisterScreen extends StatelessWidget {
     );
   }
 
+  Widget _buildTextBoxPhone() {
+    return defaultTextFormField(
+      controller: phoneController,
+      validator: (String? value) {
+        if (value!.isEmpty) {
+          return 'the phone is empty';
+        }
+        return null;
+      },
+      label: 'phone',
+      prefixIcon: Icons.lock_outline,
+    );
+  }
 
-  Widget _buildTextBoxPassword(
-      {
-        required BuildContext context,
-      }
-      ) {
+  Widget _buildTextBoxPassword({
+    required BuildContext context,
+  }) {
     return defaultTextFormField(
       controller: passwordController,
       validator: (String? value) {
@@ -112,13 +138,15 @@ class RegisterScreen extends StatelessWidget {
         }
         return null;
       },
-      onTapSuffix: (){
+      onTapSuffix: () {
         RegisterCubit.get(context).changeVisPass();
       },
       label: 'password',
       prefixIcon: Icons.lock_outlined,
       isPassword: RegisterCubit.get(context).isPassword,
-      suffixIco: RegisterCubit.get(context).isPassword ? Icons.visibility_outlined: Icons.visibility_off_outlined,
+      suffixIco: RegisterCubit.get(context).isPassword
+          ? Icons.visibility_outlined
+          : Icons.visibility_off_outlined,
     );
   }
 
@@ -128,7 +156,7 @@ class RegisterScreen extends StatelessWidget {
         const Spacer(),
         defaultTextButton(
           onPressed: () {
-            navigatorTo(context: context, widget:  LoginScreen());
+            navigatorTo(context: context, widget: LoginScreen());
           },
           label: 'Already have an account?',
           isUpperText: false,
@@ -140,23 +168,34 @@ class RegisterScreen extends StatelessWidget {
   }
 
   Widget _buildRegisterButton({
-    required BuildContext context,
+    required RegisterState registerState,
   }) {
-    return defaultButton(
-        onPressed: () {
-          if(formKey.currentState!.validate()){
-            navigatorRemoved(context: context, widget: const LayoutScreen());
-          }
-        },
-        text: 'Sign up');
+    return ConditionalBuilder(
+      condition: registerState is! RegisterLoadingState,
+      builder: (context) => defaultButton(
+          onPressed: () {
+            if (formKey.currentState!.validate()) {
+              RegisterCubit.get(context).registerUser(
+                name: nameController.text,
+                email: emailController.text,
+                phone: phoneController.text,
+                password: passwordController.text,
+              );
+            }
+          },
+          text: 'Sign up'),
+      fallback: (context) => const Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
   }
 
   Widget _buildTextRegisterWith(BuildContext context) {
     return Center(
         child: Text(
-          'Or sign up with social account',
-          style: Theme.of(context).textTheme.bodySmall,
-        ));
+      'Or sign up with social account',
+      style: Theme.of(context).textTheme.bodySmall,
+    ));
   }
 
   Widget _buildSignWith() {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shop_app/shared/style/theme.dart';
 
 Widget defaultButton({
@@ -29,8 +30,8 @@ Widget defaultTextFormField({
   required FormFieldValidator<String> validator,
   required String label,
   required IconData prefixIcon,
-   GestureTapCallback? onTapSuffix,
-  IconData? suffixIco ,
+  GestureTapCallback? onTapSuffix,
+  IconData? suffixIco,
   bool isRadius = true,
   bool isPassword = false,
   double radius = 24.0,
@@ -54,14 +55,13 @@ Widget defaultTextFormField({
       obscureText: isPassword,
       keyboardType: textType,
       decoration: InputDecoration(
-        labelText: label,
-        border: const OutlineInputBorder(),
-        prefixIcon: Icon(prefixIcon),
-        suffixIcon: IconButton(
-          onPressed:  onTapSuffix,
-          icon: Icon(suffixIco),
-        )
-      ),
+          labelText: label,
+          border: const OutlineInputBorder(),
+          prefixIcon: Icon(prefixIcon),
+          suffixIcon: IconButton(
+            onPressed: onTapSuffix,
+            icon: Icon(suffixIco),
+          )),
     ),
   );
 }
@@ -113,6 +113,59 @@ Widget defaultAuthSign({
   );
 }
 
+Widget defaultSwitch({
+  required bool value,
+  required ValueChanged<bool> onChanged,
+  Color activeColor = primaryColor,
+  bool isRadius = true,
+  double radius = 20.0
+}) {
+  return Switch(
+    value: value,
+    onChanged: onChanged,
+    activeColor: activeColor,
+    splashRadius: 80 ,
+  );
+}
+
+
+Future<bool?> showToast(
+    {
+      required String text,
+      required ToastStatus status,
+    }
+    ) => Fluttertoast.showToast(
+  msg: text,
+  toastLength: Toast.LENGTH_LONG,
+  gravity: ToastGravity.BOTTOM,
+  timeInSecForIosWeb: 5,
+  backgroundColor: chooseToastColor(status),
+  fontSize: 14,
+);
+
+enum ToastStatus {
+  success,
+  error,
+  warning,
+}
+
+Color chooseToastColor(ToastStatus status) {
+  Color color;
+  switch (status) {
+    case ToastStatus.success:
+      color = Colors.green;
+      break;
+    case ToastStatus.error:
+      color = Colors.red;
+      break;
+    case ToastStatus.warning:
+      color = Colors.amber;
+      break;
+  }
+  return color;
+}
+
+
 void navigatorTo({
   required BuildContext context,
   required Widget widget,
@@ -133,3 +186,5 @@ void navigatorRemoved({
     (route) => false,
   );
 }
+
+
