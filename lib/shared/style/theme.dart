@@ -35,7 +35,7 @@ ThemeData darkTheme = ThemeData(
       bodyMedium: TextStyle(
           fontSize: 18.0, fontWeight: FontWeight.bold, color: Colors.white),
       bodySmall: TextStyle(
-          fontSize: 14.0, fontWeight: FontWeight.bold, color: Colors.white),
+          fontSize: 12.0, fontWeight: FontWeight.bold, color: Colors.white),
     ),
 );
 
@@ -60,5 +60,5 @@ ThemeData lightTheme = ThemeData(
       bodyMedium: TextStyle(
           fontSize: 18.0, fontWeight: FontWeight.bold, color: Colors.black),
       bodySmall: TextStyle(
-          fontSize: 14.0, fontWeight: FontWeight.bold, color: Colors.black),
+          fontSize: 12.0, fontWeight: FontWeight.bold, color: Colors.black),
     ));
