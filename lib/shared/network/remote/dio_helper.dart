@@ -23,7 +23,7 @@ class DioHelper {
       'lang': lang,
       'Authorization': token ?? ''
     };
-    return await dio.get(
+    return dio.get(
       url,
       queryParameters: query,
     );
